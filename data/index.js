@@ -1,6 +1,6 @@
 //Se connecter au serveur
 var ws = new WebSocket(`ws://${window.location.hostname}/ws`);
-//var ws = new WebSocket('ws://192.168.1.2/ws'); //Mettre adresse IP du serveur WEBSOCKET
+//var ws = new WebSocket('ws://192.168.1.106/ws'); //Mettre adresse IP du serveur WEBSOCKET
 //Détecter l'ouverture d'une connexion avec le serveur
 ws.onopen = function (event) {
     ws.send("Connection avec le serveur Etablie");

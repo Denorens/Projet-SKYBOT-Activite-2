@@ -40,17 +40,10 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
         data[len] = 0;
         String message = (char *)data;
-        
         if (message == "ON") {
             digitalWrite(ledB, HIGH);
-            digitalWrite(ledH, LOW);
-            digitalWrite(ledG, LOW);
-            digitalWrite(ledD, LOW);
         } else if (message == "OFF") {
             digitalWrite(ledB, LOW);
-            digitalWrite(ledH, LOW);
-            digitalWrite(ledG, LOW);
-            digitalWrite(ledD, LOW);
         }
     }
 }
@@ -79,32 +72,6 @@ void initWebSocket() {
 
 void setup() {
     Serial.begin(115200);
-    Serial2.begin(19200, SERIAL_8N1, 16, 17); // Liaison série avec l'Arduino (TX=16, RX=17)
-
-    Serial.println("        &&--%&&----&&");
-    Serial.println("        &&%&%&&&#&#%&");
-    Serial.println("");
-    Serial.println("   /((((((((((((((((((((((");
-    Serial.println("   /((((((((((((((((((((((");
-    Serial.println("   /((((((((((((((((((((((");
-    Serial.println("   /(((((  SKYBOT  ((((((( ,@@@");
-    Serial.println("  @%((((((((((((((((((((((/@@#/@");
-    Serial.println(" @@(((((((((((((((((((((((#@@(/#");
-    Serial.println("#@@/((((((((((((((((((((((%@@%//");
-    Serial.println("/@#########################@@/(.");
-    Serial.println("@###-----------------%#####@@/#/");
-    Serial.println(" @@@@@@                    %@@(@");
-    Serial.println("      -SKYBOT by CIEL-    ");
-    Serial.println("");
-    Serial.println("");
-    Serial.println("Commandes disponibles :");
-    Serial.println("z : Avancer");
-    Serial.println("s : Reculer");
-    Serial.println("q : Rotation Gauche");
-    Serial.println("d : Rotation Droite");
-    Serial.println("r : Augmentation Vitesse");
-    Serial.println("f : Réduction Vitesse");
-    Serial.println("x : Arrêt");
 
     // Initialize GPIOs for LEDs
     pinMode(ledH, OUTPUT);
@@ -149,7 +116,6 @@ void setup() {
         digitalWrite(ledB, LOW);
         digitalWrite(ledG, LOW);
         digitalWrite(ledD, LOW);
-        Serial2.println("z");
         request->send(SPIFFS, "/index.html", String(), false);
     });
     server.on("/bas", HTTP_GET, [](AsyncWebServerRequest *request) {
@@ -157,7 +123,6 @@ void setup() {
         digitalWrite(ledH, LOW);
         digitalWrite(ledG, LOW);
         digitalWrite(ledD, LOW);
-        Serial2.println("s");
         request->send(SPIFFS, "/index.html", String(), false);
     });
     server.on("/droite", HTTP_GET, [](AsyncWebServerRequest *request) {
@@ -165,7 +130,6 @@ void setup() {
         digitalWrite(ledH, LOW);
         digitalWrite(ledB, LOW);
         digitalWrite(ledG, LOW);
-        Serial2.println("d");
         request->send(SPIFFS, "/index.html", String(), false);
     });
     server.on("/gauche", HTTP_GET, [](AsyncWebServerRequest *request) {
@@ -173,57 +137,6 @@ void setup() {
         digitalWrite(ledD, LOW);
         digitalWrite(ledH, LOW);
         digitalWrite(ledB, LOW);
-        Serial2.println("q");
-        request->send(SPIFFS, "/index.html", String(), false);
-    });
-    server.on("/vmoins", HTTP_GET, [](AsyncWebServerRequest *request) {
-        Serial2.println("f");
-        digitalWrite(ledG, HIGH);
-        digitalWrite(ledD, HIGH);
-        digitalWrite(ledH, HIGH);
-        digitalWrite(ledB, HIGH);
-        delay(200);
-        digitalWrite(ledG, LOW);
-        digitalWrite(ledD, LOW);
-        digitalWrite(ledH, LOW);
-        digitalWrite(ledB, LOW);
-        delay(200);
-        digitalWrite(ledG, HIGH);
-        digitalWrite(ledD, HIGH);
-        digitalWrite(ledH, HIGH);
-        digitalWrite(ledB, HIGH);
-        delay(200);
-        digitalWrite(ledG, LOW);
-        digitalWrite(ledD, LOW);
-        digitalWrite(ledH, LOW);
-        digitalWrite(ledB, LOW);
-        request->send(SPIFFS, "/index.html", String(), false);
-    });
-    server.on("/vplus", HTTP_GET, [](AsyncWebServerRequest *request) {
-        Serial2.println("r");
-        digitalWrite(ledG, HIGH);
-        digitalWrite(ledD, HIGH);
-        digitalWrite(ledH, HIGH);
-        digitalWrite(ledB, HIGH);
-        delay(100);
-        digitalWrite(ledG, LOW);
-        digitalWrite(ledD, LOW);
-        digitalWrite(ledH, LOW);
-        digitalWrite(ledB, LOW);
-        delay(100);
-        digitalWrite(ledG, HIGH);
-        digitalWrite(ledD, HIGH);
-        digitalWrite(ledH, HIGH);
-        digitalWrite(ledB, HIGH);
-        delay(100);
-        digitalWrite(ledG, LOW);
-        digitalWrite(ledD, LOW);
-        digitalWrite(ledH, LOW);
-        digitalWrite(ledB, LOW);
-        request->send(SPIFFS, "/index.html", String(), false);
-    });
-    server.on("/stop", HTTP_GET, [](AsyncWebServerRequest *request) {
-        Serial2.println("x");
         request->send(SPIFFS, "/index.html", String(), false);
     });
 
