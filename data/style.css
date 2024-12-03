@@ -1,0 +1,44 @@
+html {
+    font-family: Helvetica;
+    margin: 0px auto;
+    text-align: center;
+    display: inline-block;
+}
+
+h1 {
+    color: #0F3376;
+    padding: 2vh;
+}
+
+p {
+    font-size: 1.5rem;
+}
+
+.button {
+    background-color: #008CBA; /* Blue */
+    border: none;
+    border-radius: 6px; /* Rounded corners */
+    color: white;
+    padding: 16px 40px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 30px;
+    margin: 2px;
+    cursor: pointer;
+}
+
+.button2 {
+    background-color: #f44336; /* Red */
+}
+
+.button3 {
+    background-color: #f44336; /* Red */
+}
+
+.button4 {
+    background-color: #f44336; /* Red */
+}
+
+table {
+    margin: 0 auto;
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Page SKYBot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+  <h1>Projet SKYBot</h1>
+  
+  <!-- Display Temperature and Potentiometer Values -->
+  <p>Temperature = <strong><span id="temperature"></span></strong></p>
+
+  <!-- Directional Control Buttons -->
+  <table>
+    <tr>
+      <th></th>
+      <th><p><a href="/haut"><button class="button">HAUT</button></a></p></th>
+      <th></th>
+    </tr>
+    <tr>
+      <td><p><a href="/gauche"><button class="button button3">GAUCHE</button></a></p></td>
+      <td></td>
+      <td><p><a href="/droite"><button class="button button4">DROITE</button></a></p></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><p><a href="/bas"><button class="button button2">BAS</button></a></p></td>
+      <td></td>
+    </tr>
+  </table>
+
+  <!-- ON/OFF Control Buttons -->
+  <p><button class="button" onclick="toggleLED('ON')">ON</button></p>
+  <p><button class="button button2" onclick="toggleLED('OFF')">OFF</button></p>
+
+  <!-- JavaScript for WebSocket Communication -->
+  <script>
+    const gateway = `ws://${window.location.hostname}/ws`;
+    let websocket;
+
+    window.addEventListener('load', onLoad);
+
+    function onLoad(event) {
+      initWebSocket();
+    }
+
+    function initWebSocket() {
+      websocket = new WebSocket(gateway);
+      websocket.onopen = onOpen;
+      websocket.onclose = onClose;
+      websocket.onmessage = onMessage; 
+    }
+
+    function onOpen(event) {
+      console.log("Connection opened");
+    }
+
+    function onClose(event) {
+      console.log("Connection closed");
+      setTimeout(initWebSocket, 2000);
+    }
+
+    function onMessage(event) {
+      const data = event.data.split(" | ");
+      data.forEach((item) => {
+        if (item.includes("Temperature:")) {
+          document.getElementById('temperature').textContent = item.split(": ")[1];
+        } else if (item.includes("Potentiometer:")) {
+          document.getElementById('potentiometer').textContent = item.split(": ")[1];
+        }
+      });
+    }
+
+    function toggleLED(state) {
+      websocket.send(state);
+    }
+  </script>
+
+</body>
+</html>
